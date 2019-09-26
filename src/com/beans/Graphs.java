@@ -16,14 +16,14 @@ public class Graphs {
         gs.add('E', 'I', 1);
         gs.add('Z');
 
-        System.out.println("DFS: ");
-        System.out.println(gs.DFS('Z').toString().equals("[Z]"));
-        System.out.println(gs.DFS('A').toString().equals("[A, J, D, H, I, E, F, C, G, B]"));
+        System.out.println("depthFirstTraversal: ");
+        System.out.println(gs.depthFirstTraversal('Z').toString().equals("[Z]"));
+        System.out.println(gs.depthFirstTraversal('A').toString().equals("[A, J, D, H, I, E, F, C, G, B]"));
         System.out.println();
 
-        System.out.println("BFS: ");
-        System.out.println(gs.BFS('Z').toString().equals("[Z]"));
-        System.out.println(gs.BFS('A').toString().equals("[A, B, G, J, D, E, F, H, I, C]"));
+        System.out.println("breadthFirstTraversal: ");
+        System.out.println(gs.breadthFirstTraversal('Z').toString().equals("[Z]"));
+        System.out.println(gs.breadthFirstTraversal('A').toString().equals("[A, B, G, J, D, E, F, H, I, C]"));
         System.out.println();
 
         System.out.println("Dijkstra: ");
@@ -37,9 +37,9 @@ class GraphsPractice extends GraphsReference {
 }
 
 abstract class GraphsTemplate {
-    abstract List<Character> DFS(Character c);
+    abstract List<Character> depthFirstTraversal(Character c);
 
-    abstract List<Character> BFS(Character c);
+    abstract List<Character> breadthFirstTraversal(Character c);
 
     abstract List<Character> dijkstraShortestPath(Character a, Character b);
 
@@ -91,7 +91,7 @@ abstract class GraphsTemplate {
 //---
 
 class GraphsReference extends GraphsTemplate {
-    List<Character> DFS(Character c) {
+    List<Character> depthFirstTraversal(Character c) {
         List<Character> order = new ArrayList<>();
 
         Set<Character> visited = new HashSet<>();
@@ -113,7 +113,7 @@ class GraphsReference extends GraphsTemplate {
         return order;
     }
 
-    List<Character> BFS(Character c) {
+    List<Character> breadthFirstTraversal(Character c) {
         List<Character> order = new ArrayList<>();
 
         Set<Character> visited = new HashSet<>();

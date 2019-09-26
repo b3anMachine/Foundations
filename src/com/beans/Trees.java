@@ -1,7 +1,7 @@
 package com.beans;
 
 public class Trees {
-    public static void main(String[] args) {
+    public static void main(String... args) {
         ReferenceAVLTree trunk = new PracticeAVLTree();
 
         System.out.println("Add: ");

@@ -3,7 +3,7 @@ package com.beans;
 import java.util.Arrays;
 
 public class Lists {
-    public static void main(String[] args) {
+    public static void main(String... args) {
         ListsReference as = new ListsPractice();
 
         System.out.println("bubble sort: " + isSorted(as.bubbleSort(getTestArray(0))));
