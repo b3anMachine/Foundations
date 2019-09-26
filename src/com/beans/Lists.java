@@ -1,4 +1,4 @@
-package com.Beans;
+package com.beans;
 
 import java.util.Arrays;
 
