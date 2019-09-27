@@ -47,22 +47,37 @@ abstract class GraphsTemplate {
 
     //Note: this class has a natural ordering that is inconsistent with equals.
     class Edge implements Comparable<Edge> {
-        Character dest;
-        Integer dist;
+        private Character dest;
+        private Integer dist;
 
         Edge(Character dest, Integer dist) {
+            this.setDest(dest);
+            this.setDist(dist);
+        }
+
+        Integer getDist(){
+            return dist;
+        }
+
+        Character getDest(){
+            return dest;
+        }
+
+        public void setDest(Character dest) {
             this.dest = dest;
+        }
+
+        public void setDist(Integer dist) {
             this.dist = dist;
         }
 
         public int compareTo(Edge other) {
-            return Integer.compare(dest, other.dest);
+            return Integer.compare(getDest(), other.getDest());
         }
 
         public String toString() {
-            return "(" + dest + ", " + dist + ")";
+            return "(" + getDest() + ", " + getDist() + ")";
         }
-
     }
 
     public void add(Character base, Character[] dests, Integer[] dists) {
@@ -106,8 +121,8 @@ class GraphsReference extends GraphsTemplate {
             order.add(cur);
 
             for (Edge edge : graph.get(cur))
-                if (visited.add(edge.dest))
-                    stack.push(edge.dest);
+                if (visited.add(edge.getDest()))
+                    stack.push(edge.getDest());
         }
 
         return order;
@@ -128,8 +143,8 @@ class GraphsReference extends GraphsTemplate {
             order.add(cur);
 
             for (Edge edge : graph.get(cur))
-                if (visited.add(edge.dest))
-                    queue.offer(edge.dest);
+                if (visited.add(edge.getDest()))
+                    queue.offer(edge.getDest());
         }
 
         return order;
@@ -147,27 +162,25 @@ class GraphsReference extends GraphsTemplate {
         for (Character c : graph.keySet())
             backSteps.put(c, null);
 
-        PriorityQueue<Edge> priQueue = new PriorityQueue<>(new Comparator<Edge>() {
-            public int compare(Edge e1, Edge e2) {
-                return Integer.compare(e1.dist, e2.dist);
-            }
-        });
+        PriorityQueue<Edge> priQueue = new PriorityQueue<>(Comparator.comparing(Edge::getDist));
+
         priQueue.offer(new Edge(a, 0));
 
         while (!priQueue.isEmpty() && !priQueue.peek().equals(b)) {
             Edge from = priQueue.poll();
 
-            if (distances.get(from.dest) < from.dist) //Priority queue optimization
+            //Priority queue optimization
+            if (distances.get(from.getDest()) < from.getDist())
                 continue;
 
-            for (Edge to : graph.get(from.dest)) {
-                Integer oldDist = distances.get(to.dest);
-                Integer newDist = distances.get(from.dest) + to.dist;
+            for (Edge to : graph.get(from.getDest())) {
+                Integer oldDist = distances.get(to.getDest());
+                Integer newDist = distances.get(from.getDest()) + to.getDist();
 
                 if (newDist < oldDist) {
-                    distances.put(to.dest, newDist);
-                    backSteps.put(to.dest, from.dest);
-                    priQueue.add(new Edge(to.dest, newDist));
+                    distances.put(to.getDest(), newDist);
+                    backSteps.put(to.getDest(), from.getDest());
+                    priQueue.add(new Edge(to.getDest(), newDist));
                 }
             }
         }

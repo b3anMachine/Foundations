@@ -4,37 +4,49 @@ import java.util.Arrays;
 
 public class Lists {
     public static void main(String... args) {
-        ListsReference as = new ListsPractice();
+        ListsReference ls = new ListsPractice();
 
-        System.out.println("bubble sort: " + isSorted(as.bubbleSort(getTestArray(0))));
-        System.out.println("bubble sort: " + isSorted(as.bubbleSort(getTestArray(1))));
-        System.out.println("bubble sort: " + isSorted(as.bubbleSort(getTestArray(10))));
-        System.out.println("bubble sort: " + isSorted(as.bubbleSort(getTestArray(100))));
-        System.out.println("bubble sort: " + isSorted(as.bubbleSort(getTestArray(2))));
+        System.out.println("Bubble sort: ");
+        System.out.println(isSorted(ls.bubbleSort(getTestArray(0))));
+        System.out.println(isSorted(ls.bubbleSort(getTestArray(1))));
+        System.out.println(isSorted(ls.bubbleSort(getTestArray(10))));
+        System.out.println(isSorted(ls.bubbleSort(getTestArray(100))));
+        System.out.println(isSorted(ls.bubbleSort(getTestArray(2))));
         System.out.println();
-        System.out.println("selection sort: " + isSorted(as.selectionSort(getTestArray(0))));
-        System.out.println("selection sort: " + isSorted(as.selectionSort(getTestArray(1))));
-        System.out.println("selection sort: " + isSorted(as.selectionSort(getTestArray(2))));
-        System.out.println("selection sort: " + isSorted(as.selectionSort(getTestArray(10))));
-        System.out.println("selection sort: " + isSorted(as.selectionSort(getTestArray(100))));
+        System.out.println("Selection sort: ");
+        System.out.println(isSorted(ls.selectionSort(getTestArray(0))));
+        System.out.println(isSorted(ls.selectionSort(getTestArray(1))));
+        System.out.println(isSorted(ls.selectionSort(getTestArray(2))));
+        System.out.println(isSorted(ls.selectionSort(getTestArray(10))));
+        System.out.println(isSorted(ls.selectionSort(getTestArray(100))));
         System.out.println();
-        System.out.println("quick sort: " + isSorted(as.quickSort(getTestArray(0))));
-        System.out.println("quick sort: " + isSorted(as.quickSort(getTestArray(1))));
-        System.out.println("quick sort: " + isSorted(as.quickSort(getTestArray(2))));
-        System.out.println("quick sort: " + isSorted(as.quickSort(getTestArray(10))));
-        System.out.println("quick sort: " + isSorted(as.quickSort(getTestArray(100))));
+        System.out.println("Quick sort: ");
+        System.out.println(isSorted(ls.quickSort(getTestArray(0))));
+        System.out.println(isSorted(ls.quickSort(getTestArray(1))));
+        System.out.println(isSorted(ls.quickSort(getTestArray(2))));
+        System.out.println(isSorted(ls.quickSort(getTestArray(10))));
+        System.out.println(isSorted(ls.quickSort(getTestArray(100))));
         System.out.println();
-        System.out.println("merge sort: " + isSorted(as.mergeSort(getTestArray(0))));
-        System.out.println("merge sort: " + isSorted(as.mergeSort(getTestArray(1))));
-        System.out.println("merge sort: " + isSorted(as.mergeSort(getTestArray(2))));
-        System.out.println("merge sort: " + isSorted(as.mergeSort(getTestArray(10))));
-        System.out.println("merge sort: " + isSorted(as.mergeSort(getTestArray(100))));
+        System.out.println("Merge sort: ");
+        System.out.println(isSorted(ls.mergeSort(getTestArray(0))));
+        System.out.println(isSorted(ls.mergeSort(getTestArray(1))));
+        System.out.println(isSorted(ls.mergeSort(getTestArray(2))));
+        System.out.println(isSorted(ls.mergeSort(getTestArray(10))));
+        System.out.println(isSorted(ls.mergeSort(getTestArray(100))));
         System.out.println();
-        System.out.println("heap sort: " + isSorted(as.heapSort(getTestArray(0))));
-        System.out.println("heap sort: " + isSorted(as.heapSort(getTestArray(1))));
-        System.out.println("heap sort: " + isSorted(as.heapSort(getTestArray(2))));
-        System.out.println("heap sort: " + isSorted(as.heapSort(getTestArray(10))));
-        System.out.println("heap sort: " + isSorted(as.heapSort(getTestArray(100))));
+        System.out.println("Heap sort: ");
+        System.out.println(isSorted(ls.heapSort(getTestArray(0))));
+        System.out.println(isSorted(ls.heapSort(getTestArray(1))));
+        System.out.println(isSorted(ls.heapSort(getTestArray(2))));
+        System.out.println(isSorted(ls.heapSort(getTestArray(10))));
+        System.out.println(isSorted(ls.heapSort(getTestArray(100))));
+        System.out.println();
+        System.out.println("Binary search: ");
+        System.out.println(ls.binarySearch(new int[]{},  -4) == -1);
+        System.out.println(ls.binarySearch(new int[]{4, 7, 34, 35, 94},  80) == -1);
+        System.out.println(ls.binarySearch(new int[]{4, 7, 34, 35, 94},  94) == 4);
+        System.out.println(ls.binarySearch(new int[]{4, 7, 20, 34, 35, 94},  94) == 5);
+        System.out.println(ls.binarySearch(new int[]{4, 7, 20, 34, 35, 94},  34) == 3);
     }
 
     static int[] getTestArray(int length) {
@@ -189,4 +201,22 @@ class ListsReference extends ListsTemplate {
             heapify(a, largest, boundary);
         }
     }
+
+    public int binarySearch(int[] a, int n) {
+        int b = 0, e = a.length - 1;
+
+        while(b <= e){
+            int m = (b + e) / 2;
+
+            if(n < a[m])
+                e = m - 1;
+            else if(n > a[m])
+                b = m + 1;
+            else
+                return m;
+        }
+
+        return -1;
+    }
+
 }
