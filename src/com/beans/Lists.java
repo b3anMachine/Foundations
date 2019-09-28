@@ -138,7 +138,7 @@ class ListsReference extends ListsTemplate {
         if (begin >= end)
             return;
 
-        int mid = (begin + end) / 2;
+        int mid = begin + (end - begin) / 2;
 
         mergeSortInner(a, begin, mid);
         mergeSortInner(a, mid + 1, end);
@@ -206,7 +206,7 @@ class ListsReference extends ListsTemplate {
         int b = 0, e = a.length - 1;
 
         while(b <= e){
-            int m = (b + e) / 2;
+            int m = b + (e - b) / 2;
 
             if(n < a[m])
                 e = m - 1;
