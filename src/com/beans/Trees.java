@@ -52,7 +52,7 @@ class PracticeAVLTree extends ReferenceAVLTree {
 }
 
 abstract class AVLTreeTemplate {
-    abstract public String serialize();
+    abstract public String toString();
 
     abstract public ReferenceAVLTree add(Integer data);
 
@@ -60,26 +60,61 @@ abstract class AVLTreeTemplate {
 
     abstract public Integer get(Integer r);
 
-    abstract public boolean contains(Integer data);
-
-    public String toString() {
-        return serialize();
-    }
+    abstract public Boolean contains(Integer data);
 
     Node root;
 
     class Node {
-        Integer data;
-        Node leftChild;
-        Node rightChild;
-
-        Integer height;
-        Integer balanceFactor;
+        private Integer data;
+        private Node leftChild;
+        private Node rightChild;
+        private Integer height;
+        private Integer balanceFactor;
 
         Node(Integer data) {
+            this.setData(data);
+            this.setHeight(0);
+            this.setBalanceFactor(0);
+        }
+
+        public Integer getData() {
+            return data;
+        }
+
+        public void setData(Integer data) {
             this.data = data;
-            this.height = 0;
-            this.balanceFactor = 0;
+        }
+
+        public Node getLeftChild() {
+            return leftChild;
+        }
+
+        public void setLeftChild(Node leftChild) {
+            this.leftChild = leftChild;
+        }
+
+        public Node getRightChild() {
+            return rightChild;
+        }
+
+        public void setRightChild(Node rightChild) {
+            this.rightChild = rightChild;
+        }
+
+        public Integer getHeight() {
+            return height;
+        }
+
+        public void setHeight(Integer height) {
+            this.height = height;
+        }
+
+        public Integer getBalanceFactor() {
+            return balanceFactor;
+        }
+
+        public void setBalanceFactor(Integer balanceFactor) {
+            this.balanceFactor = balanceFactor;
         }
     }
 }
@@ -87,27 +122,27 @@ abstract class AVLTreeTemplate {
 //---
 
 class ReferenceAVLTree extends AVLTreeTemplate {
-    public String serialize() {
+    public String toString() {
         StringBuilder b = new StringBuilder();
-        serialize(root, b);
+        toStringInner(root, b);
         return b.toString();
     }
 
-    private void serialize(Node n, StringBuilder b) {
+    private void toStringInner(Node n, StringBuilder b) {
         if (n == null)
             return;
 
-        b.append(n.data + ", ");
+        b.append(n.getData() + ", ");
 
-        if (n.leftChild == null)
+        if (n.getLeftChild() == null)
             b.append("X, ");
         else
-            serialize(n.leftChild, b);
+            toStringInner(n.getLeftChild(), b);
 
-        if (n.rightChild == null)
+        if (n.getRightChild() == null)
             b.append("X, ");
         else
-            serialize(n.rightChild, b);
+            toStringInner(n.getRightChild(), b);
 
         return;
     }
@@ -121,10 +156,10 @@ class ReferenceAVLTree extends AVLTreeTemplate {
         if (n == null)
             return new Node(data);
 
-        if (data < n.data)
-            n.leftChild = add(data, n.leftChild);
-        else if (data > n.data)
-            n.rightChild = add(data, n.rightChild);
+        if (data < n.getData())
+            n.setLeftChild(add(data, n.getLeftChild()));
+        else if (data > n.getData())
+            n.setRightChild(add(data, n.getRightChild()));
 
         update(n);
         return balance(n);
@@ -139,37 +174,37 @@ class ReferenceAVLTree extends AVLTreeTemplate {
         if (n == null)
             return null;
 
-        if (data < n.data)
-            n.leftChild = remove(data, n.leftChild);
-        else if (data > n.data)
-            n.rightChild = remove(data, n.rightChild);
-        else if (n.leftChild == null)
-            return n.rightChild;
-        else if (n.rightChild == null)
-            return n.leftChild;
+        if (data < n.getData())
+            n.setLeftChild(remove(data, n.getLeftChild()));
+        else if (data > n.getData())
+            n.setRightChild(remove(data, n.getRightChild()));
+        else if (n.getLeftChild() == null)
+            return n.getRightChild();
+        else if (n.getRightChild() == null)
+            return n.getLeftChild();
         else {
-            Node next = n.rightChild;
-            while (next.leftChild != null)
-                next = next.leftChild;
-            n.data = next.data;
-            n.rightChild = remove(next.data, n.rightChild);
+            Node next = n.getRightChild();
+            while (next.getLeftChild() != null)
+                next = next.getLeftChild();
+            n.setData(next.getData());
+            n.setRightChild(remove(next.getData(), n.getRightChild()));
         }
 
         update(n);
         return balance(n);
     }
 
-    public boolean contains(Integer data) {
+    public Boolean contains(Integer data) {
         return contains(data, root);
     }
 
     private boolean contains(Integer data, Node n) {
         if (n == null)
             return false;
-        if (data < n.data)
-            return contains(data, n.leftChild);
-        if (data > n.data)
-            return contains(data, n.rightChild);
+        if (data < n.getData())
+            return contains(data, n.getLeftChild());
+        if (data > n.getData())
+            return contains(data, n.getRightChild());
         else
             return true;
     }
@@ -182,44 +217,44 @@ class ReferenceAVLTree extends AVLTreeTemplate {
         if (n == null)
             return null;
 
-        Integer r = get(n.leftChild, rank, counter);
+        Integer r = get(n.getLeftChild(), rank, counter);
 
         if (r != null)
             return r;
 
         counter[0]++;
         if (counter[0] == rank)
-            return n.data;
+            return n.getData();
 
-        return get(n.rightChild, rank, counter);
+        return get(n.getRightChild(), rank, counter);
     }
 
     void update(Node n) {
         int lh = -1, rh = -1;
 
-        if (n.leftChild != null)
-            lh = n.leftChild.height;
+        if (n.getLeftChild() != null)
+            lh = n.getLeftChild().getHeight();
 
-        if (n.rightChild != null)
-            rh = n.rightChild.height;
+        if (n.getRightChild() != null)
+            rh = n.getRightChild().getHeight();
 
-        n.height = 1 + Math.max(lh, rh);
-        n.balanceFactor = rh - lh;
+        n.setHeight(1 + Math.max(lh, rh));
+        n.setBalanceFactor(rh - lh);
     }
 
     Node balance(Node n) {
-        if (n.balanceFactor == -2)
-            if (n.leftChild.balanceFactor <= 0) {
+        if (n.getBalanceFactor() == -2)
+            if (n.getLeftChild().getBalanceFactor() <= 0) {
                 return rightRotate(n);
             } else {
-                n.leftChild = leftRotate(n.leftChild);
+                n.setLeftChild(leftRotate(n.getLeftChild()));
                 return rightRotate(n);
             }
-        else if (n.balanceFactor == +2)
-            if (n.rightChild.balanceFactor >= 0) // == 1
+        else if (n.getBalanceFactor() == +2)
+            if (n.getRightChild().getBalanceFactor() >= 0) // == 1
                 return leftRotate(n);
             else {
-                n.rightChild = rightRotate(n.rightChild);
+                n.setRightChild(rightRotate(n.getRightChild()));
                 return leftRotate(n);
             }
         else
@@ -227,18 +262,18 @@ class ReferenceAVLTree extends AVLTreeTemplate {
     }
 
     private Node rightRotate(Node n) {
-        Node pivot = n.leftChild;
-        n.leftChild = pivot.rightChild;
-        pivot.rightChild = n;
+        Node pivot = n.getLeftChild();
+        n.setLeftChild(pivot.getRightChild());
+        pivot.setRightChild(n);
         update(n);
         update(pivot);
         return pivot;
     }
 
     private Node leftRotate(Node n) {
-        Node pivot = n.rightChild;
-        n.rightChild = pivot.leftChild;
-        pivot.leftChild = n;
+        Node pivot = n.getRightChild();
+        n.setRightChild(pivot.getLeftChild());
+        pivot.setLeftChild(n);
         update(n);
         update(pivot);
         return pivot;

@@ -6,12 +6,12 @@ public class Lists {
     public static void main(String... args) {
         ListsReference ls = new ListsPractice();
 
-        System.out.println("Bubble sort: ");
-        System.out.println(isSorted(ls.bubbleSort(getTestArray(0))));
-        System.out.println(isSorted(ls.bubbleSort(getTestArray(1))));
-        System.out.println(isSorted(ls.bubbleSort(getTestArray(10))));
-        System.out.println(isSorted(ls.bubbleSort(getTestArray(100))));
-        System.out.println(isSorted(ls.bubbleSort(getTestArray(2))));
+        System.out.println("Insertion sort: ");
+        System.out.println(isSorted(ls.insertionSort(getTestArray(0))));
+        System.out.println(isSorted(ls.insertionSort(getTestArray(1))));
+        System.out.println(isSorted(ls.insertionSort(getTestArray(2))));
+        System.out.println(isSorted(ls.insertionSort(getTestArray(10))));
+        System.out.println(isSorted(ls.insertionSort(getTestArray(100))));
         System.out.println();
         System.out.println("Selection sort: ");
         System.out.println(isSorted(ls.selectionSort(getTestArray(0))));
@@ -69,7 +69,7 @@ class ListsPractice extends ListsReference {
 }
 
 abstract class ListsTemplate {
-    abstract public int[] bubbleSort(int[] a);
+    abstract public int[] insertionSort(int[] a);
 
     abstract public int[] selectionSort(int[] a);
 
@@ -79,6 +79,8 @@ abstract class ListsTemplate {
 
     abstract public int[] heapSort(int[] a);
 
+    abstract public int binarySearch(int[] a, int n);
+
     public void swap(int[] a, int i, int j) {
         int t = a[i];
         a[i] = a[j];
@@ -87,11 +89,14 @@ abstract class ListsTemplate {
 }
 
 class ListsReference extends ListsTemplate {
-    public int[] bubbleSort(int[] a) {
-        for (int i = 0; i < a.length; i++)
-            for (int j = 1; j < a.length; j++)
-                if (a[j - 1] > a[j])
-                    swap(a, j - 1, j);
+    public int[] insertionSort(int[] a) {
+        for(int i = 0; i < a.length; i++) {
+            int j = i;
+            while (j > 0 && a[j - 1] > a[j]) {
+                swap(a, j - 1, j);
+                j--;
+            }
+        }
         return a;
     }
 
@@ -203,17 +208,17 @@ class ListsReference extends ListsTemplate {
     }
 
     public int binarySearch(int[] a, int n) {
-        int b = 0, e = a.length - 1;
+        int begin = 0, end = a.length - 1;
 
-        while(b <= e){
-            int m = b + (e - b) / 2;
+        while(begin <= end){
+            int mid = begin + (end - begin) / 2;
 
-            if(n < a[m])
-                e = m - 1;
-            else if(n > a[m])
-                b = m + 1;
+            if(n < a[mid])
+                end = mid - 1;
+            else if(n > a[mid])
+                begin = mid + 1;
             else
-                return m;
+                return mid;
         }
 
         return -1;
