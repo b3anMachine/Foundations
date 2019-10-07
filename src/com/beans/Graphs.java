@@ -6,9 +6,9 @@ public class Graphs {
     public static void main(String... args) {
         GraphsReference gs = new GraphsPractice();
 
-        gs.add('A', new Character[]{'B', 'J', 'G'}, new Integer[]{1, 3, 6});
-        gs.add('B', 'D', 1);
-        gs.add('J', new Character[]{'D', 'G'}, new Integer[]{2, 2});
+        gs.add('A', new Character[]{'B', 'J', 'G'}, new Integer[]{18, 3, 6});
+        gs.add('B', 'D', 18);
+        gs.add('J', new Character[]{'D', 'G'}, new Integer[]{18, 2});
         gs.add('G', new Character[]{'F', 'E'}, new Integer[]{1, 2});
         gs.add('D', 'H', 9);
         gs.add('H', new Character[]{'C', 'I', 'F'}, new Integer[]{3, 1, 5});
@@ -28,7 +28,7 @@ public class Graphs {
 
         System.out.println("Dijkstra: ");
         System.out.println(gs.dijkstraShortestPath('A', 'Z').toString().equals("[]"));
-        System.out.println(gs.dijkstraShortestPath('A', 'C').toString().equals("[A, J, G, F, I, H, C]"));
+        System.out.println(gs.dijkstraShortestPath('A', 'D').toString().equals("[A, J, G, F, I, H, D]"));
     }
 }
 
@@ -46,41 +46,29 @@ abstract class GraphsTemplate {
     Map<Character, Set<Edge>> graph = new HashMap<>();
 
     //Note: this class has a natural ordering that is inconsistent with equals.
-    class Edge implements Comparable<Edge> {
-        private Character dest;
-        private Integer dist;
+    protected class Edge implements Comparable<Edge> {
+        Character dest;
+        Integer dist;
 
         Edge(Character dest, Integer dist) {
-            this.setDest(dest);
-            this.setDist(dist);
+            this.dest = dest;
+            this.dist = dist;
         }
 
         Integer getDist(){
             return dist;
         }
-
-        Character getDest(){
-            return dest;
-        }
-
-        public void setDest(Character dest) {
-            this.dest = dest;
-        }
-
-        public void setDist(Integer dist) {
-            this.dist = dist;
-        }
-
+        
         public int compareTo(Edge other) {
-            return Integer.compare(getDest(), other.getDest());
+            return Integer.compare(dest, other.dest);
         }
 
         public String toString() {
-            return "(" + getDest() + ", " + getDist() + ")";
+            return "(" + dest + ", " + dist + ")";
         }
     }
 
-    public void add(Character base, Character[] dests, Integer[] dists) {
+    void add(Character base, Character[] dests, Integer[] dists) {
         if (dests.length != dists.length)
             return;
 
@@ -88,7 +76,7 @@ abstract class GraphsTemplate {
             add(base, dests[i], dists[i]);
     }
 
-    public void add(Character base, Character dest, Integer dist) {
+    void add(Character base, Character dest, Integer dist) {
         add(base);
         add(dest);
 
@@ -96,7 +84,7 @@ abstract class GraphsTemplate {
         graph.get(dest).add(new Edge(base, dist));
     }
 
-    public void add(Character node) {
+    void add(Character node) {
         if (graph.containsKey(node))
             return;
         graph.put(node, new TreeSet<>());
@@ -121,8 +109,8 @@ class GraphsReference extends GraphsTemplate {
             order.add(cur);
 
             for (Edge edge : graph.get(cur))
-                if (visited.add(edge.getDest()))
-                    stack.push(edge.getDest());
+                if (visited.add(edge.dest))
+                    stack.push(edge.dest);
         }
 
         return order;
@@ -143,8 +131,8 @@ class GraphsReference extends GraphsTemplate {
             order.add(cur);
 
             for (Edge edge : graph.get(cur))
-                if (visited.add(edge.getDest()))
-                    queue.offer(edge.getDest());
+                if (visited.add(edge.dest))
+                    queue.offer(edge.dest);
         }
 
         return order;
@@ -166,21 +154,21 @@ class GraphsReference extends GraphsTemplate {
 
         priQueue.offer(new Edge(a, 0));
 
-        while (!priQueue.isEmpty() && !priQueue.peek().equals(b)) {
+        while (!priQueue.isEmpty() && !priQueue.peek().dest.equals(b)) {
             Edge from = priQueue.poll();
 
             //Priority queue optimization
-            if (distances.get(from.getDest()) < from.getDist())
+            if (distances.get(from.dest) < from.dist)
                 continue;
 
-            for (Edge to : graph.get(from.getDest())) {
-                Integer oldDist = distances.get(to.getDest());
-                Integer newDist = distances.get(from.getDest()) + to.getDist();
+            for (Edge to : graph.get(from.dest)) {
+                Integer oldDist = distances.get(to.dest);
+                Integer newDist = distances.get(from.dest) + to.dist;
 
                 if (newDist < oldDist) {
-                    distances.put(to.getDest(), newDist);
-                    backSteps.put(to.getDest(), from.getDest());
-                    priQueue.add(new Edge(to.getDest(), newDist));
+                    distances.put(to.dest, newDist);
+                    backSteps.put(to.dest, from.dest);
+                    priQueue.add(new Edge(to.dest, newDist));
                 }
             }
         }
