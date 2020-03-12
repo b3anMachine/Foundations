@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class Lists {
     public static void main(String... args) {
-        ListsReference ls = new ListsPractice();
+        ListsMethods ls = new ListsPractice();
 
         System.out.println("Insertion sort: ");
         System.out.println(isSorted(ls.insertionSort(getTestArray(0))));
@@ -42,11 +42,11 @@ public class Lists {
         System.out.println(isSorted(ls.heapSort(getTestArray(100))));
         System.out.println();
         System.out.println("Binary search: ");
-        System.out.println(ls.binarySearch(new int[]{},  -4) == -1);
-        System.out.println(ls.binarySearch(new int[]{4, 7, 34, 35, 94},  80) == -1);
-        System.out.println(ls.binarySearch(new int[]{4, 7, 34, 35, 94},  94) == 4);
-        System.out.println(ls.binarySearch(new int[]{4, 7, 20, 34, 35, 94},  94) == 5);
-        System.out.println(ls.binarySearch(new int[]{4, 7, 20, 34, 35, 94},  34) == 3);
+        System.out.println(ls.binarySearch(new int[]{}, -4) == -1);
+        System.out.println(ls.binarySearch(new int[]{4, 7, 34, 35, 94}, 80) == -1);
+        System.out.println(ls.binarySearch(new int[]{4, 7, 34, 35, 94}, 94) == 4);
+        System.out.println(ls.binarySearch(new int[]{4, 7, 20, 34, 35, 94}, 94) == 5);
+        System.out.println(ls.binarySearch(new int[]{4, 7, 20, 34, 35, 94}, 34) == 3);
     }
 
     static int[] getTestArray(int length) {
@@ -64,11 +64,21 @@ public class Lists {
     }
 }
 
-class ListsPractice extends ListsReference {
-    //15:04
+class ListsPractice extends ListsSolutions {
+    //public int[] insertionSort(int[] a){ }
+
+    //public int[] selectionSort(int[] a){ }
+
+    //public int[] quickSort(int[] a){ }
+
+    //public int[] mergeSort(int[] a){ }
+
+    //public int[] heapSort(int[] a) { }
+
+    //public int binarySearch(int[] a, int n) { }
 }
 
-abstract class ListsTemplate {
+abstract class ListsMethods {
     abstract public int[] insertionSort(int[] a);
 
     abstract public int[] selectionSort(int[] a);
@@ -88,9 +98,9 @@ abstract class ListsTemplate {
     }
 }
 
-class ListsReference extends ListsTemplate {
+class ListsSolutions extends ListsMethods {
     public int[] insertionSort(int[] a) {
-        for(int i = 0; i < a.length; i++) {
+        for (int i = 0; i < a.length; i++) {
             int j = i;
             while (j > 0 && a[j - 1] > a[j]) {
                 swap(a, j - 1, j);
@@ -210,12 +220,12 @@ class ListsReference extends ListsTemplate {
     public int binarySearch(int[] a, int n) {
         int begin = 0, end = a.length - 1;
 
-        while(begin <= end){
+        while (begin <= end) {
             int mid = begin + (end - begin) / 2;
 
-            if(n < a[mid])
+            if (n < a[mid])
                 end = mid - 1;
-            else if(n > a[mid])
+            else if (n > a[mid])
                 begin = mid + 1;
             else
                 return mid;
